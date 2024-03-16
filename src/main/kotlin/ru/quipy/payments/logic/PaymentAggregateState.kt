@@ -45,7 +45,8 @@ class PaymentAggregateState : AggregateState<UUID, PaymentAggregate> {
             event.processedAt,
             event.transactionId,
             event.reason,
-            event.success
+            event.success,
+            event.account
         )
         updatedAt = createdAt
     }
@@ -63,5 +64,6 @@ class PaymentAggregateState : AggregateState<UUID, PaymentAggregate> {
         val transactionId: UUID?,
         val reason: String?,
         val success: Boolean,
+        val account: String?,
     )
 }

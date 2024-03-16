@@ -25,12 +25,13 @@ fun PaymentAggregateState.logProcessing(
     success: Boolean,
     processedAt: Long,
     transactionId: UUID? = null,
-    reason: String? = null
+    reason: String? = null,
+    account: String? = null
 ): PaymentProcessedEvent {
     val submittedAt = this.submissions[transactionId ?: UUID.randomUUID()]?.timeStarted ?: 0
     val spentInQueueDuration = this.submissions[transactionId ?: UUID.randomUUID()]?.spentInQueue ?: Duration.ofMillis(0)
 
     return PaymentProcessedEvent(
-        this.getId(), success, this.orderId, submittedAt, processedAt, this.amount!!, transactionId, reason, spentInQueueDuration
+        this.getId(), success, this.orderId, submittedAt, processedAt, this.amount!!, transactionId, reason, spentInQueueDuration, account
     )
 }

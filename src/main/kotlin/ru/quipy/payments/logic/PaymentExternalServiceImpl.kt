@@ -77,14 +77,14 @@ class PaymentExternalServiceImpl(
                 // Здесь мы обновляем состояние оплаты в зависимости от результата в базе данных оплат.
                 // Это требуется сделать ВО ВСЕХ ИСХОДАХ (успешная оплата / неуспешная / ошибочная ситуация)
                 paymentESService.update(paymentId) {
-                    it.logProcessing(body.result, now(), transactionId, reason = body.message)
+                    it.logProcessing(body.result, now(), transactionId, reason = body.message, account = accountName)
                 }
             }
         } catch (e: Exception) {
             when (e) {
                 is SocketTimeoutException -> {
                     paymentESService.update(paymentId) {
-                        it.logProcessing(false, now(), transactionId, reason = "Request timeout.")
+                        it.logProcessing(false, now(), transactionId, reason = "Request timeout.", account = accountName)
                     }
                 }
 
@@ -92,7 +92,7 @@ class PaymentExternalServiceImpl(
                     logger.error("[$accountName] Payment failed for txId: $transactionId, payment: $paymentId", e)
 
                     paymentESService.update(paymentId) {
-                        it.logProcessing(false, now(), transactionId, reason = e.message)
+                        it.logProcessing(false, now(), transactionId, reason = e.message, account = accountName)
                     }
                 }
             }

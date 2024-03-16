@@ -45,6 +45,7 @@ class PaymentProcessedEvent(
     val transactionId: UUID?,
     val reason: String?,
     val spentInQueueDuration: Duration,
+    val account: String?,
     createdAt: Long = System.currentTimeMillis(),
 ) : Event<PaymentAggregate>(
     name = PAYMENT_PROCESSED_EVENT,
